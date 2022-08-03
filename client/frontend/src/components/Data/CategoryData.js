@@ -71,7 +71,7 @@ export const CategoryData = () => {
     handlePopupClose();
   };
   const updateCategory = (id) => {
-    console.log("Upadte", id);
+    console.log("Update", id);
     axios.put(`http://localhost:3000/api/categories/${id}`, {
       name: category,
     });
