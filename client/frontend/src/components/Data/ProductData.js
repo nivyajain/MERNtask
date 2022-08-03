@@ -35,7 +35,10 @@ export const ProductData = () => {
   const handleClose = () => setOpen(false);
   const [name, setName] = useState("");
   const [price, setPrice] = useState();
-
+  const [storeId, setStoreId] = useState("");
+  const [openEdit, setOpenEdit] = React.useState(false);
+  const handleEditOpen = () => setOpenEdit(true);
+  const handleEditClose = () => setOpenEdit(false);
   const [description, setDescription] = useState("");
   const [categoryId, setCategoryId] = useState("");
   const [openhandle, setOpenHandle] = React.useState(false);
@@ -66,6 +69,16 @@ export const ProductData = () => {
   const deleteProduct = (id) => {
     axios.delete(`http://localhost:3000/api/products/${id}`);
     console.log("ID", id);
+  };
+
+  const updateProduct = () => {
+    axios.put(`http://localhost:3000/api/products/${storeId}`, {
+      name: name,
+      price: price,
+      description: description,
+      categoryId: categoryId,
+    });
+    handleEditClose();
   };
 
   return (
@@ -134,7 +147,14 @@ export const ProductData = () => {
                   {row.name}
                 </TableCell>
                 <TableCell component="th" scope="row">
-                  <Button variant="contained" style={{ marginRight: "5px" }}>
+                  <Button
+                    onClick={() => {
+                      handleEditOpen();
+                      setStoreId(row._id);
+                    }}
+                    variant="contained"
+                    style={{ marginRight: "5px" }}
+                  >
                     Edit
                   </Button>
                   <Button
@@ -149,6 +169,48 @@ export const ProductData = () => {
           </TableBody>
         </Table>
       </TableContainer>
+      <Modal
+        open={openEdit}
+        onClose={handleEditClose}
+        aria-labelledby="parent-modal-title"
+        aria-describedby="parent-modal-description"
+      >
+        <Box sx={style}>
+          <h3 style={{ textAlign: "center", marginTop: "4px" }}>
+            Update Category
+          </h3>
+          <label>CategoryName:</label>
+          <input type="text" onChange={(e) => setName(e.target.value)} />
+          <br />
+          <label>CategoryID:</label>
+          <input type="text" onChange={(e) => setCategoryId(e.target.value)} />
+          <br />
+          <label>Price:</label>
+          <input
+            type="number
+          "
+            onChange={(e) => setPrice(e.target.value)}
+          />
+          <br />
+          <label>Description:</label>
+          <input type="text" onChange={(e) => setDescription(e.target.value)} />
+          <br />
+          <div>
+            {" "}
+            <Button
+              onClick={updateProduct}
+              variant="contained"
+              style={{ margin: "8px" }}
+            >
+              {" "}
+              Update Category
+            </Button>
+            <Button onClick={handleEditClose} variant="contained">
+              Close
+            </Button>
+          </div>
+        </Box>
+      </Modal>
 
       <Dialog
         fullScreen={fullScreen}

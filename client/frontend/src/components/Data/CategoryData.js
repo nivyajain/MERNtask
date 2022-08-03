@@ -31,8 +31,8 @@ const style = {
 
 export const CategoryData = () => {
   const [category, setCategory] = useState("");
-  // const [newCategory, setNewCategory] = useState("");
-
+  
+  const [storeId, setStoreId] = useState("");
   const [catList, setCatList] = useState([]);
   const [open, setOpen] = React.useState(false);
   const handleOpen = () => setOpen(true);
@@ -70,9 +70,8 @@ export const CategoryData = () => {
     console.log("ID", id);
     handlePopupClose();
   };
-  const updateCategory = (id) => {
-    console.log("Update", id);
-    axios.put(`http://localhost:3000/api/categories/${id}`, {
+  const updateCategory = () => {
+    axios.put(`http://localhost:3000/api/categories/${storeId}`, {
       name: category,
     });
     handleEditClose();
@@ -131,7 +130,10 @@ export const CategoryData = () => {
                 </TableCell>
                 <TableCell component="th" scope="row">
                   <Button
-                    onClick={() => handleEditOpen(row._id)}
+                    onClick={() => {
+                      handleEditOpen();
+                      setStoreId(row._id);
+                    }}
                     variant="contained"
                     style={{ marginRight: "5px" }}
                   >
@@ -167,7 +169,7 @@ export const CategoryData = () => {
           <div>
             {" "}
             <Button
-              onClick={() => updateCategory(handleEditOpen)}
+              onClick={updateCategory}
               variant="contained"
               style={{ margin: "8px" }}
             >
