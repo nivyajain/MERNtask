@@ -64,11 +64,14 @@ export const ProductData = () => {
       description: description,
       categoryId: categoryId,
     });
-    alert("Data added successfully");
+    handleClose();
+    fetchHandler();
   };
   const deleteProduct = (id) => {
     axios.delete(`http://localhost:3000/api/products/${id}`);
     console.log("ID", id);
+    handlePopupClose();
+    fetchHandler();
   };
 
   const updateProduct = () => {
@@ -79,6 +82,7 @@ export const ProductData = () => {
       categoryId: categoryId,
     });
     handleEditClose();
+    fetchHandler();
   };
 
   return (
@@ -144,7 +148,9 @@ export const ProductData = () => {
                 sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
               >
                 <TableCell component="th" scope="row">
-                  {row.name}
+                  <h3>{row.name}</h3>
+                  <p>{row.description}</p>
+                  <h3> {row.price}</h3>
                 </TableCell>
                 <TableCell component="th" scope="row">
                   <Button

@@ -31,7 +31,7 @@ const style = {
 
 export const CategoryData = () => {
   const [category, setCategory] = useState("");
-  
+
   const [storeId, setStoreId] = useState("");
   const [catList, setCatList] = useState([]);
   const [open, setOpen] = React.useState(false);
@@ -62,24 +62,26 @@ export const CategoryData = () => {
     axios.post("http://localhost:3000/api/categories", {
       name: category,
     });
-    alert("Data added successfully");
     handleClose();
+    fetchHandler();
   };
   const deleteCategory = (id) => {
     axios.delete(`http://localhost:3000/api/categories/${id}`);
     console.log("ID", id);
     handlePopupClose();
+    fetchHandler();
   };
   const updateCategory = () => {
     axios.put(`http://localhost:3000/api/categories/${storeId}`, {
       name: category,
     });
     handleEditClose();
+    fetchHandler();
   };
   return (
     <div style={{ marginLeft: "30px" }}>
       <Button onClick={handleOpen} variant="contained">
-        Category
+        Add Category
       </Button>
       <Modal
         open={open}
