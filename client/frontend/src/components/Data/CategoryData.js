@@ -31,7 +31,6 @@ const style = {
 
 export const CategoryData = () => {
   const [category, setCategory] = useState("");
-
   const [storeId, setStoreId] = useState("");
   const [catList, setCatList] = useState([]);
   const [open, setOpen] = React.useState(false);
@@ -49,7 +48,7 @@ export const CategoryData = () => {
   const fullScreen = useMediaQuery(theme.breakpoints.down("md"));
 
   const fetchHandler = useCallback(() => {
-    axios.get("http://localhost:3000/api/categories").then((res) => {
+    axios.get("http://localhost:5000/api/categories").then((res) => {
       setCatList(res.data);
     });
   }, []);
@@ -59,24 +58,24 @@ export const CategoryData = () => {
   }, [fetchHandler]);
 
   const addCategory = () => {
-    axios.post("http://localhost:3000/api/categories", {
+    axios.post("http://localhost:5000/api/categories", {
       name: category,
     });
     handleClose();
     fetchHandler();
   };
   const deleteCategory = (id) => {
-    axios.delete(`http://localhost:3000/api/categories/${id}`);
+    axios.delete(`http://localhost:5000/api/categories/${id}`);
     console.log("ID", id);
     handlePopupClose();
     fetchHandler();
   };
   const updateCategory = () => {
-    axios.put(`http://localhost:3000/api/categories/${storeId}`, {
+    axios.put(`http://localhost:5000/api/categories/${storeId}`, {
       name: category,
     });
     handleEditClose();
-    fetchHandler();
+     fetchHandler();
   };
   return (
     <div style={{ marginLeft: "30px" }}>

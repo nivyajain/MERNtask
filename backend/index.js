@@ -1,6 +1,7 @@
 const mongoose = require("mongoose");
 const express = require("express");
 var cors = require("cors");
+
 const product = require("./routes/products");
 const category = require("./routes/categories");
 const { Category } = require("./models/category");
@@ -12,6 +13,11 @@ mongoose
   .catch((err) => console.error("Could not connect to MongoDB..."));
 app.use(express.json());
 app.use(cors());
+
+app.post("/single", (req, res) => {
+  console.log(req.file);
+  res.send("single file uploaded successfully");
+});
 
 app.get("/allProducts", async (req, res) => {
   await Category.aggregate([
@@ -42,6 +48,7 @@ app.get("/allProducts", async (req, res) => {
 });
 app.use("/api/products", product);
 app.use("/api/categories", category);
+app.use(express.static("images"));
 
-const port = process.env.PORT || 3000;
+const port = process.env.PORT || 5000;
 app.listen(port, () => console.log(`Listening on port ${port}...`));

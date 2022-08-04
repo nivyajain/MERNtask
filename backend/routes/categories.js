@@ -36,6 +36,7 @@ router.put("/:id", async (req, res) => {
   );
 
   if (!category)
+  
     return res
       .status(404)
       .send("The Category with the given ID was not found.");

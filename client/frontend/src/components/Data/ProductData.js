@@ -35,6 +35,7 @@ export const ProductData = () => {
   const handleClose = () => setOpen(false);
   const [name, setName] = useState("");
   const [price, setPrice] = useState();
+  const [image, setImage] = useState(null);
   const [storeId, setStoreId] = useState("");
   const [openEdit, setOpenEdit] = React.useState(false);
   const handleEditOpen = () => setOpenEdit(true);
@@ -48,7 +49,7 @@ export const ProductData = () => {
   const fullScreen = useMediaQuery(theme.breakpoints.down("md"));
 
   const fetchHandler = useCallback(() => {
-    axios.get("http://localhost:3000/api/products").then((res) => {
+    axios.get("http://localhost:5000/api/products").then((res) => {
       setProductList(res.data);
     });
   }, []);
@@ -57,29 +58,33 @@ export const ProductData = () => {
     fetchHandler();
   }, [fetchHandler]);
 
-  const addProduct = () => {
-    axios.post("http://localhost:3000/api/products", {
-      name: name,
-      price: price,
-      description: description,
-      categoryId: categoryId,
-    });
+  const addProduct = (e) => {
+    e.preventDefault();
+    const data = new FormData();
+    data.append("name", name);
+    data.append("description", description);
+    data.append("price", price);
+    data.append("categoryId", categoryId);
+    data.append("image", image);
+    console.log(image);
+    axios.post("http://localhost:5000/api/products", data);
     handleClose();
     fetchHandler();
   };
   const deleteProduct = (id) => {
-    axios.delete(`http://localhost:3000/api/products/${id}`);
+    axios.delete(`http://localhost:5000/api/products/${id}`);
     console.log("ID", id);
     handlePopupClose();
     fetchHandler();
   };
 
   const updateProduct = () => {
-    axios.put(`http://localhost:3000/api/products/${storeId}`, {
+    axios.put(`http://localhost:5000/api/products/${storeId}`, {
       name: name,
       price: price,
       description: description,
       categoryId: categoryId,
+      image: image,
     });
     handleEditClose();
     fetchHandler();
@@ -97,40 +102,53 @@ export const ProductData = () => {
         aria-labelledby="parent-modal-title"
         aria-describedby="parent-modal-description"
       >
-        <Box sx={style}>
-          <h3 style={{ textAlign: "center", marginTop: "4px" }}>Add Product</h3>
-          <label>ProductName:</label>
-          <input type="text" onChange={(e) => setName(e.target.value)} />
-          <br />
-          <label>CategoryID:</label>
-          <input type="text" onChange={(e) => setCategoryId(e.target.value)} />
-          <br />
-          <label>Price:</label>
-          <input
-            type="number
-          "
-            onChange={(e) => setPrice(e.target.value)}
-          />
-          <br />
-          <label>Description:</label>
-          <input type="text" onChange={(e) => setDescription(e.target.value)} />
-          <br />
-          <br />
-          <div>
-            {" "}
-            <Button
-              onClick={addProduct}
-              variant="contained"
-              style={{ margin: "8px" }}
-            >
-              {" "}
-              ADD Product
-            </Button>
-            <Button onClick={handleClose} variant="contained">
-              Close
-            </Button>
-          </div>
-        </Box>
+        <form encType="multipart/form-data" onSubmit={addProduct}>
+          <Box sx={style}>
+            <h3 style={{ textAlign: "center", marginTop: "4px" }}>
+              Add Product
+            </h3>
+            <label>ProductName:</label>
+            <input type="text" onChange={(e) => setName(e.target.value)} />
+            <br />
+            <label>CategoryID:</label>
+            <input
+              type="text"
+              onChange={(e) => setCategoryId(e.target.value)}
+            />
+            <br />
+            <label>Price:</label>
+            <input type="number" onChange={(e) => setPrice(e.target.value)} />
+            <br />
+            <label>Description:</label>
+            <input
+              type="text"
+              onChange={(e) => setDescription(e.target.value)}
+            />
+            <br />
+            <br />
+            <label>Images:</label>
+            <input
+              type="file"
+              name="image"
+              onChange={(e) => {
+                setImage(e.target.files[0]);
+              }}
+            />
+            <div>
+              <Button
+                onClick={() => {}}
+                type="submit"
+                variant="contained"
+                style={{ margin: "8px" }}
+              >
+                ADD Product
+              </Button>
+              <Button onClick={handleClose} variant="contained">
+                Close
+              </Button>
+            </div>
+          </Box>
+        </form>
       </Modal>
 
       <TableContainer component={Paper}>
@@ -151,6 +169,14 @@ export const ProductData = () => {
                   <h3>{row.name}</h3>
                   <p>{row.description}</p>
                   <h3> {row.price}</h3>
+                  {/* {console.log(row.images)} */}
+                  <img
+                    src={`http://localhost:5000/${row.images}`}
+                    name="image"
+                    alt="..."
+                    height="100px"
+                    width="100px"
+                  />
                 </TableCell>
                 <TableCell component="th" scope="row">
                   <Button
@@ -183,9 +209,9 @@ export const ProductData = () => {
       >
         <Box sx={style}>
           <h3 style={{ textAlign: "center", marginTop: "4px" }}>
-            Update Category
+            Update Product
           </h3>
-          <label>CategoryName:</label>
+          <label>ProductName:</label>
           <input type="text" onChange={(e) => setName(e.target.value)} />
           <br />
           <label>CategoryID:</label>
@@ -209,7 +235,7 @@ export const ProductData = () => {
               style={{ margin: "8px" }}
             >
               {" "}
-              Update Category
+              Update Product
             </Button>
             <Button onClick={handleEditClose} variant="contained">
               Close

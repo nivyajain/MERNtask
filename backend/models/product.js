@@ -10,6 +10,9 @@ const productSchema = new mongoose.Schema({
     maxlength: 50,
     trim: true,
   },
+  image: {
+    type: String,
+  },
   categoryId: { type: Schema.Types.ObjectId, ref: "Category" },
 
   description: {
@@ -22,8 +25,9 @@ const productSchema = new mongoose.Schema({
     required: true,
     trim: true,
   },
-  image: {
+  images: {
     type: String,
+    default: null,
   },
   createdAt: { type: Date, default: Date.now },
   updatedAt: { type: Date, default: Date.now },
