@@ -84,7 +84,6 @@ export const ProductData = () => {
       price: price,
       description: description,
       categoryId: categoryId,
-      image: image,
     });
     handleEditClose();
     fetchHandler();
@@ -243,7 +242,6 @@ export const ProductData = () => {
           </div>
         </Box>
       </Modal>
-
       <Dialog
         fullScreen={fullScreen}
         open={openhandle}
