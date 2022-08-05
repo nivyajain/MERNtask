@@ -16,6 +16,8 @@ import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 const style = {
   position: "absolute",
   top: "50%",
@@ -54,9 +56,15 @@ export const ProductData = () => {
     });
   }, []);
 
+  const showToast = () => {
+    toast.success(" Data  added suucessfully ", {
+      position: toast.POSITION.TOP_RIGHT,
+    });
+  };
+
   useEffect(() => {
     fetchHandler();
-  }, [fetchHandler]);
+  });
 
   const addProduct = (e) => {
     e.preventDefault();
@@ -70,6 +78,7 @@ export const ProductData = () => {
     axios.post("http://localhost:5000/api/products", data);
     handleClose();
     fetchHandler();
+    showToast();
   };
   const deleteProduct = (id) => {
     axios.delete(`http://localhost:5000/api/products/${id}`);
@@ -102,6 +111,7 @@ export const ProductData = () => {
         aria-describedby="parent-modal-description"
       >
         <form encType="multipart/form-data" onSubmit={addProduct}>
+          <ToastContainer />
           <Box sx={style}>
             <h3 style={{ textAlign: "center", marginTop: "4px" }}>
               Add Product

@@ -55,7 +55,7 @@ export const CategoryData = () => {
 
   useEffect(() => {
     fetchHandler();
-  }, [fetchHandler]);
+  });
 
   const addCategory = () => {
     axios.post("http://localhost:5000/api/categories", {
@@ -75,7 +75,7 @@ export const CategoryData = () => {
       name: category,
     });
     handleEditClose();
-     fetchHandler();
+    fetchHandler();
   };
   return (
     <div style={{ marginLeft: "30px" }}>
